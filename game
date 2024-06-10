@@ -1,0 +1,50 @@
+const riddles = [
+    { question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "echo" },
+    { question: "You measure my life in hours and I serve you by expiring. I die when I'm devoured. What am I?", answer: "candle" },
+    { question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", answer: "map" },
+];
+
+let currentRiddleIndex = 0;
+let currentScore = 0;
+let bestScore = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadRiddle();
+    updateScores();
+});
+
+function loadRiddle() {
+    if (currentRiddleIndex < riddles.length) {
+        document.getElementById("riddle").textContent = riddles[currentRiddleIndex].question;
+    } else {
+        document.getElementById("riddle").textContent = "Congratulations! You've completed all the riddles.";
+        document.getElementById("answer").disabled = true;
+        document.querySelector("button").disabled = true;
+    }
+}
+
+function checkAnswer() {
+    const userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+    const correctAnswer = riddles[currentRiddleIndex].answer.toLowerCase();
+
+    if (userAnswer === correctAnswer) {
+        currentScore++;
+        document.getElementById("feedback").textContent = "Correct!";
+    } else {
+        document.getElementById("feedback").textContent = "Wrong answer. Try again!";
+        return;
+    }
+
+    currentRiddleIndex++;
+    document.getElementById("answer").value = "";
+    loadRiddle();
+    updateScores();
+}
+
+function updateScores() {
+    document.getElementById("current-score").textContent = currentScore;
+    if (currentScore > bestScore) {
+        bestScore = currentScore;
+        document.getElementById("best-score").textContent = bestScore;
+    }
+}
